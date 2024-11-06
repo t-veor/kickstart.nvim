@@ -87,8 +87,8 @@ P.S. You can delete this when you're done too. It's your config now! :)
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = '\\'
+vim.g.maplocalleader = '\\'
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
@@ -237,6 +237,19 @@ require('lazy').setup({
   --
   -- Use `opts = {}` to force a plugin to be loaded.
   --
+
+  -- "gc" to comment visual regions/lines
+  {
+    'numToStr/Comment.nvim',
+    opts = {
+      toggler = {
+        line = '<C-/>',
+      },
+      opleader = {
+        line = '<C-/>',
+      },
+    },
+  },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -870,7 +883,32 @@ require('lazy').setup({
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      -- require('mini.surround').setup()
+
+      -- Setup similar to 'tpope/vim-surround'
+      require('mini.surround').setup {
+        mappings = {
+          add = 'ys',
+          delete = 'ds',
+          find = '',
+          find_left = '',
+          highlight = '',
+          replace = 'cs',
+          update_n_lines = '',
+
+          -- Add this only if you don't want to use extended mappings
+          suffix_last = '',
+          suffix_next = '',
+        },
+        search_method = 'cover_or_next',
+      }
+
+      -- Remap adding surrounding to Visual mode selection
+      vim.keymap.del('x', 'ys')
+      vim.keymap.set('x', 'S', [[:<C-u>lua MiniSurround.add('visual')<CR>]], { silent = true })
+
+      -- Make special mapping for "add surrounding for line"
+      vim.keymap.set('n', 'yss', 'ys_', { remap = true })
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -916,6 +954,9 @@ require('lazy').setup({
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
+
+  -- vim-sneak
+  'justinmk/vim-sneak',
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
