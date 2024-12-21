@@ -252,10 +252,10 @@ require('lazy').setup({
     'numToStr/Comment.nvim',
     opts = {
       toggler = {
-        line = '<C-_>',
+        line = '<C-/>',
       },
       opleader = {
-        line = '<C-_>',
+        line = '<C-/>',
       },
     },
   },
