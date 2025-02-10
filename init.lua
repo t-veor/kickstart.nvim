@@ -860,6 +860,10 @@ require('lazy').setup({
     'neanias/everforest-nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
+      require('everforest').setup {
+        transparent_background_level = 2,
+        italics = true,
+      }
       vim.cmd.colorscheme 'everforest'
     end,
   },
