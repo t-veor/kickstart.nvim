@@ -457,7 +457,7 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>/', function()
         -- You can pass additional configuration to Telescope to change the theme, layout, etc.
         builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
+          winblend = 0,
           previewer = false,
         })
       end, { desc = '[/] Fuzzily search in current buffer' })
@@ -503,7 +503,16 @@ require('lazy').setup({
 
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', opts = {} },
+      {
+        'j-hui/fidget.nvim',
+        opts = {
+          notification = {
+            window = {
+              winblend = 0,
+            },
+          },
+        },
+      },
 
       -- Allows extra capabilities provided by nvim-cmp
       'hrsh7th/cmp-nvim-lsp',
@@ -660,6 +669,7 @@ require('lazy').setup({
         pyright = {},
         ruff = {},
         rust_analyzer = {},
+        jsonls = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -887,6 +897,12 @@ require('lazy').setup({
   {
     'neanias/everforest-nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
+    config = function()
+      require('everforest').setup {
+        background = 'hard',
+        transparent_background_level = 2,
+      }
+    end,
     init = function()
       vim.cmd.colorscheme 'everforest'
     end,
