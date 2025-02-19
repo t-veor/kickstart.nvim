@@ -93,6 +93,9 @@ vim.g.maplocalleader = '\\'
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
 
+-- Enable transparency if running in supported terminal
+vim.g.use_transparency = vim.env.TERM == 'alacritty'
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
@@ -507,9 +510,9 @@ require('lazy').setup({
         'j-hui/fidget.nvim',
         opts = {
           notification = {
-            window = {
+            window = vim.g.use_transparency and {
               winblend = 0,
-            },
+            } or {},
           },
         },
       },
@@ -900,14 +903,10 @@ require('lazy').setup({
     config = function()
       require('everforest').setup {
         background = 'hard',
-        transparent_background_level = 2,
+        transparent_background_level = vim.g.use_transparency and 2 or 0,
       }
     end,
     init = function()
-      require('everforest').setup {
-        transparent_background_level = 2,
-        italics = true,
-      }
       vim.cmd.colorscheme 'everforest'
     end,
   },
